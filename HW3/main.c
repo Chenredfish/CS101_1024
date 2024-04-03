@@ -1,3 +1,9 @@
+//功能都有，但是效果不太一樣...
+//1.record.bin只記錄賣出的數量，沒有賣出內容的紀錄
+//2.需要攜帶特透彩和編號，才可兌獎
+//3.只會告訴你是否得獎...
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,6 +16,7 @@ char record(){
     char num[1];
     fread(num, sizeof(char), 1, file);
     fseek(file, 0, SEEK_SET);
+    //printf("%s", num);
     num[0]+=1;
     fwrite(num, sizeof(char), 1, file);
     fclose(file);
@@ -41,7 +48,7 @@ void buy(int input){
         for(int j=0; j<7; j++){
             int num = rand()%70;
             //printf("%d ", num);
-            char arr_write[3] = {(num/10)+48,(num%10)+48, 0};
+            char arr_write[3] = {(num/10)+48,(num%10)+48, 32};
             fwrite(arr_write, sizeof(char), 3, file);
         }
         //printf("\n");
@@ -50,6 +57,34 @@ void buy(int input){
 }
 
 void check(){
+
+    char ans[6],filename[100]="lotto", lotto_num[100];
+    char num[]="0";
+    int line=0;
+    FILE* file;
+    
+    printf("請輸入中獎號碼(個位數字前面加上0)：");
+    scanf("%s", ans);
+    printf("請輸入你的樂透彩編號：");
+    scanf("%s", num);
+    
+    strcat(filename, num);
+    strcat(filename, ".txt");
+    
+    file = fopen(filename, "r");
+    
+    for(int i=1;i<100; i++){
+        if(i%8==0){
+            line+=1;
+        }
+        fseek(file, 29+3*i-line, SEEK_SET);
+        fread(lotto_num, sizeof(char), 2, file);
+        if(strcmp(lotto_num, ans)==0){
+            printf("\n%s ", lotto_num);
+            printf("中獎了!");
+        }
+    }
+    fclose(file);
     
 }
 
@@ -60,11 +95,11 @@ int main()
     printf("請輸入你要購買的樂透彩數量：");
     scanf("%d", &input);
     
-    if(input){
-        buy(input);
+    if(input==0){
+        check();
     }
     else{
-        check;
+        buy(input);
     }
     return 0;
 }
