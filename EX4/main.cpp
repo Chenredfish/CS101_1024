@@ -2,11 +2,40 @@
 #include <string>
 using namespace std;
 
+class Engine{
+    private:
+    int m_EngineCapacity;
+    int m_Horespower;
+    bool m_Enginerunning;
+    
+    public:
+    
+    Engine(int EngineCapacity=2000, int Horespower=200){
+        m_EngineCapacity = EngineCapacity;
+        m_Horespower = Horespower;
+        m_Enginerunning = false;
+    }
+    
+    bool EngineStart(){
+        m_Enginerunning = true;
+        return true;
+    }
+    
+    bool EngineStop(){
+        m_Enginerunning = false;
+        return false;
+    }
+    bool get_EngineStatus(){
+        return m_Enginerunning;
+    }
+};
+
 class Car {
     protected:
     string m_DriveMode;
     
     private:
+    Engine m_Engine;
     int m_MaxSeating;
     int m_price;
     void m_UpdatePrice(int base=500000){
@@ -37,6 +66,15 @@ class Car {
     }
     string get_DriveMode(){
         return m_DriveMode;
+    }
+    bool get_EngineStatus(){
+        return m_Engine.get_EngineStatus();
+    }
+    bool StarEngine(){
+        return m_Engine.EngineStart();
+    }
+    bool StopEngine(){
+        return m_Engine.EngineStop();
     }
 };
 
@@ -79,15 +117,19 @@ int main()
     
     BMW_Car car_1("BMW", 2023, 6);
     cout<<car_1.m_brand;
-    cout<<" ：Drive Mode = "<<car_1.get_DriveMode()<<endl;
+    cout<<" ：EngineStatus = "<<car_1.get_EngineStatus()<<endl;
     
     AUDI_Car car_2("AUDI", 2023, 5);
+    car_2.StarEngine();
     cout<<car_2.m_brand;
-    cout<<" ：Drive Mode = "<<car_2.get_DriveMode()<<endl;
+    cout<<" ：EngineStatus = "<<car_2.get_EngineStatus()<<endl;
+    car_2.StopEngine();
+    cout<<car_2.m_brand;
+    cout<<" ：EngineStatus = "<<car_2.get_EngineStatus()<<endl;
     
     BENZ_Car car_3("Benz", 2023, 5);
     cout<<car_3.m_brand;
-    cout<<" ：Drive Mode = "<<car_3.get_DriveMode()<<endl;
+    cout<<" ：EngineStatus = "<<car_3.get_EngineStatus()<<endl;
     
     return 0;
 }
