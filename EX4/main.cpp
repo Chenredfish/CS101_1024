@@ -48,7 +48,7 @@ class Fueltank {
                 cout<<"Error: Gas_grade: "<<gas<<" Correct Gas_grade: "<<m_Gas_grade<<endl;
             }
             else {
-                cout<<"fuel_up: "<<v<<" Gas_grade: "<<gas;
+                cout<<"fuel_up: "<<v<<" Gas_grade: "<<gas<<endl;
             }
             return 1;
         }
